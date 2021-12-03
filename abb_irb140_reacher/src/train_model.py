@@ -2,7 +2,9 @@
 
 
 # from abb_irb140_reacher.robot_env.abb_irb140_servo import ABBIRB140Servo
-from abb_irb140_reacher.task_env.abb_irb140_reacher import ABBIRB140ReacherEnv
+# from abb_irb140_reacher.task_env.abb_irb140_reacher import ABBIRB140ReacherEnv
+
+from abb_irb140_reacher.task_env.abb_irb140_vel_reacher import ABBIRB140VelReacherEnv
 
 import gym
 import rospy
@@ -24,14 +26,14 @@ if __name__ == '__main__':
     ros_node.ros_kill_all_processes()
 
     # Launch Gazebo 
-    ros_gazebo.launch_Gazebo(paused=True, gui=True, custom_world_pkg='abb_irb140_reacher', custom_world_name='no_collision.world')
+    ros_gazebo.launch_Gazebo(paused=True, gui=False, custom_world_pkg='abb_irb140_reacher', custom_world_name='no_collision.world')
 
     # Start node
     rospy.logwarn("Start")
     rospy.init_node('train_irb140_reacher')
 
     # Launch the task environment
-    env = gym.make('ABBIRB140ReacherEnv-v0')
+    env = gym.make('ABBIRB140VelReacherEnv-v0')
 
     #--- Normalize action space
     env = NormalizeActionWrapper(env)

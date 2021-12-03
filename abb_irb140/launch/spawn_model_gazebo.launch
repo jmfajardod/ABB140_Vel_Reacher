@@ -57,7 +57,7 @@
         respawn="false" 
         output="screen"
         args=  "spawn 
-                  joint_state_controller"
+                joint_state_controller"
     />
 
     <node 
@@ -67,7 +67,7 @@
         respawn="false" 
         output="screen"
         args=  "load 
-                  arm140_controller"
+                arm140_controller"
     />
 
     <node 
@@ -77,7 +77,7 @@
         respawn="false" 
         output="screen"
         args=  "spawn 
-                  arm140_group_controller"
+                arm140_group_controller"
     />
 
 </launch>

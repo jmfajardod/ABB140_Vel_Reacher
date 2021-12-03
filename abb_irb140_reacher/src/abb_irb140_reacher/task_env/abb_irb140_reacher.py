@@ -60,8 +60,8 @@ class ABBIRB140ReacherEnv(abb_irb140_servo.ABBIRB140Servo):
         observations_low_vec_EE_GOAL  = np.array([-1.0, -1.0, -1.0])
 
         #- With Vector from EE to goal, Goal pos and joint angles
-        high = np.concatenate([observations_high_vec_EE_GOAL, observations_high_goal_pos_range, self.max_joint_values, ])
-        low  = np.concatenate([observations_low_vec_EE_GOAL,  observations_low_goal_pos_range,  self.min_joint_values, ])
+        high = np.concatenate([observations_high_vec_EE_GOAL, observations_high_goal_pos_range, self.max_joint_values, -1.0*np.array(self.limit_joint_vel), ])
+        low  = np.concatenate([observations_low_vec_EE_GOAL,  observations_low_goal_pos_range,  self.min_joint_values,  np.array(self.limit_joint_vel), ])
 
         #--- Observation space
         self.observation_space = spaces.Box(low=low, high=high, dtype=np.float32) 
@@ -155,6 +155,7 @@ class ABBIRB140ReacherEnv(abb_irb140_servo.ABBIRB140Servo):
 
         #- Launch new servo node
         ros_node.ros_node_from_pkg("moveit_servo", "servo_server", name=self.servo_node_name, output="screen", launch_new_term=True)
+        self.prev_action = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
 
         #--- If training set random goal
         if self.training:
@@ -186,7 +187,7 @@ class ABBIRB140ReacherEnv(abb_irb140_servo.ABBIRB140Servo):
         """
         The action are the joint velocities.
         """
-
+        self.prev_action = action
         rospy.logwarn("=== Action: {}".format(action))
 
         #--- Send the action to the robot
@@ -217,7 +218,8 @@ class ABBIRB140ReacherEnv(abb_irb140_servo.ABBIRB140Servo):
             vec_EE_GOAL,             # Vector from EE to Goal
             current_goal,            # Position of Goal
             #self.ee_pos,            # Current position of EE
-            self.joint_values        # Current joint angles
+            self.joint_values,       # Current joint angles
+            self.prev_action         # Previous joint velocities
             ),
             axis=None
         )

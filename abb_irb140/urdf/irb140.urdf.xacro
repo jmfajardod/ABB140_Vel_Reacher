@@ -295,18 +295,18 @@
 		</inertial>
 	</link>
 
-  <joint name="joint_ee_link" type="fixed">
-    <parent link="link_6"/>
-    <child link="ee_link"/>
-    <origin rpy="0 0 0" xyz="0 0 0"/>
-  </joint>
+	<joint name="joint_ee_link" type="fixed">
+		<parent link="link_6"/>
+		<child link="ee_link"/>
+		<origin rpy="0 0 0" xyz="0 0 0"/>
+	</joint>
 
 	<!--link_tool-->
 	<link name="ee_link"/>
 
-  
 
-  <!-- Include Xacro files for joint and gazebo properties -->
-  <xacro:include filename="$(find abb_irb140)/urdf/irb140.gazebo.xacro"/>
+
+	<!-- Include Xacro files for joint and gazebo properties -->
+	<xacro:include filename="$(find abb_irb140)/urdf/irb140.gazebo.xacro"/>
 
 </robot>
